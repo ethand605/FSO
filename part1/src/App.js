@@ -1,9 +1,9 @@
 import { useState } from 'react'
 // import Course from './components/course'
+import Filter from './components/Filter'
+import PersonForm from './components/PersonForm'
+import Persons from './components/Persons'
 
-const Person = ({person}) => {
-  return <p>{person.name} {person.number}</p>
-}
 
 const App = () => {
   const [persons, setPersons] = useState([
@@ -26,8 +26,9 @@ const App = () => {
     setNewNum(event.target.value)
   }
 
-  const addPeron = (event) => {
+  const addPerson = (event) => {
     event.preventDefault();
+    console.log("works here");
     let person = { 
       name: newName,
       number: newNum,
@@ -35,7 +36,7 @@ const App = () => {
      }
     let found = false
     persons.forEach(p => {
-      if (JSON.stringify(p) === JSON.stringify(person)){
+      if (JSON.stringify(p.name) === JSON.stringify(person.name)){
         found=true
       }
     })
@@ -55,23 +56,16 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
-      <form>
-        <div>filter shown with<input value={keyWord} onChange={handleFilter}></input></div>
-      </form>
+      <Filter value={keyWord} onChange={handleFilter}/>
       <h2>Add New</h2>
-      <form onSubmit={addPeron}>
+      {/* <form onSubmit={addPerson}>
         <div>name: <input value={newName} onChange={handleNewName} /></div>
         <div>number: <input value={newNum} onChange={handleNewNum}/></div>
         <div><button  type="submit">add</button></div>
-      </form>
+      </form> */}
+      <PersonForm addPerson={addPerson} newName={newName} handleNewName={handleNewName} newNum={newNum} handleNewNum={handleNewNum} />
       <h2>Numbers</h2>
-      {/* <div>debug: {newName} {newNum}</div> */}
-      <div>{persons.filter(p => p.name.toLowerCase().includes(keyWord)).map((p) => {
-        return <Person key={p.name} person={p}/>
-      }
-        
-      )}
-      </div>
+      <Persons keyWord={keyWord} persons={persons} />
     </div>
   )
 }
